@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uberapp
+spec:
+  selector:
+    app: uberapp
+  ports:
+  - protocol: "TCP"
+    port: 6000
+    targetPort: 5000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uberapp
+spec:
+  selector:
+    matchLabels:
+      app: uberapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: uberapp
+    spec:
+      containers:
+      - name: uberapp
+        image: 510940142514.dkr.ecr.us-east-1.amazonaws.com/uberapp:latest
+        ports:
+        - containerPort: 5000
